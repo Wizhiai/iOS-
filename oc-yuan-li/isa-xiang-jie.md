@@ -79,7 +79,7 @@ has\_cxx\_dtor
 
 shiftcls
 
-* 存储着Class、Meta-Class对象的内存地址 这里也解释了`& ISA_MASK`才能取到Class、Meta-Class对象的内存地址
+* 存储着Class、Meta-Class对象的内存地址 这里也解释了**`&ISA_MASK`**才能取到Class、Meta-Class对象的内存地址
 
 magic
 
