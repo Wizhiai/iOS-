@@ -102,7 +102,35 @@ has\_sidetable\_rc
 * 0：引用计数存储在isa的extra\_r所占用位域中
 * 1：引用计数过大无法存储在isa中，引用计数存储在一个叫SideTable的类的属性中
 
+对象释放时会调用objc\_destructInstance
 
 
 
+```text
+void *objc_destructInstance(id obj) 
+{
+    if (obj) {
+        // Read all of the flags at once for performance.
+        bool cxx = obj->hasCxxDtor();
+        bool assoc = obj->hasAssociatedObjects();
+
+        // This order is important.
+        if (cxx) object_cxxDestruct(obj);
+        if (assoc) _object_remove_assocations(obj);
+        obj->clearDeallocating();
+    }
+
+    return obj;
+}
+
+```
+
+从这两句，
+
+```text
+ if (cxx) object_cxxDestruct(obj);
+        if (assoc) _object_remove_assocations(obj);
+```
+
+我们 可以看到没有析构函数，没有设置过关联对象对象释放的速度会更快点。
 
